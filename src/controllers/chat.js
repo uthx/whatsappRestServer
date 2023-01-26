@@ -1,29 +1,15 @@
 import WhatsappClient from "whatsapp-web.js";
-import { client } from "../index.js";
-import request from "request";
-import { isImageValid } from "../utils/helpers.js";
+import { isImageValid, getClientInstance } from "../utils/helpers.js";
 import { BULK_MESSAGE_LIMIT } from "../utils/constants.js";
 import WwebjsSender  from'@deathabyss/wwebjs-sender'; 
-// const request = require('request')
-
-const mediadownloader = (url, path, callback) => {
-  request.head(url, (err, res, body) => {
-    request(url).pipe(fs.createWriteStream(path)).on("close", callback);
-  });
-};
-
-// Post: /sendmessage/:phone
-// Post: /sendimage/:phone
-// Post: /sendpdf/:phone
-// Post: /sendlocation/:phone
-// Get: /getchatbyid/:phone
-// Get: /getchats
 
 export const sendMessage = async (req, res) => {
-  console.log("hello sendMesage");
+  console.log("hello sendMessage");
   try {
-    const { phoneNumber, countryCode, message } = req.body;
+      const client = getClientInstance(req.params.clientSessionId);
+      const { phoneNumber, countryCode, message } = req.body;
     console.log({ reqBody: req.body });
+
     if (!phoneNumber || !countryCode || !message) {
       res.send({
         status: "error",
@@ -47,6 +33,7 @@ export const sendMessage = async (req, res) => {
 
 export const sendImage = async (req, res) => {
   try {
+    const client = getClientInstance(req.params.clientSessionId);
     const { phoneNumber, image, caption, countryCode } = req.body;
     if (!phoneNumber || !countryCode || !image || !isImageValid(image)) {
       res.send({
@@ -87,6 +74,7 @@ export const bulkMessage = async (req, res) => {
     "contactInfo" : [{phoneNumber: 'num', countryCode: '91'}] // this field will be stringified
     */
   try {
+    const client = getClientInstance(req.params.clientSessionId);
     const { message, contactInfo } = req.body;
     const parsedContactInfo = JSON.parse(contactInfo);
     // check contactInfo length, it should be >= 100
@@ -161,7 +149,8 @@ export const sendButton = async (req, res) => {
     //   status: "success",
     //   message: "button sent successfully",
     // });
-    const response = await buttonFlow(`${req.body.phoneNumber}@c.us`);
+    const client = getClientInstance(req.params.clientSessionId);
+    const response = await buttonFlow(`${req.body.phoneNumber}@c.us`, client);
     console.log({response});
      res.send({
       status: "success",
@@ -176,7 +165,7 @@ export const sendButton = async (req, res) => {
   }
 };
 
-const buttonFlow = async (number) => {
+const buttonFlow = async (number, client) => {
   try {
       console.log("buttonflow log", number)
 
