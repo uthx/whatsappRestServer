@@ -4,11 +4,11 @@ const route = express.Router();
 
 route.post('/sendMessage/:clientSessionId', sendMessage)
 
-route.post('/sendImage:clientSessionId', sendImage);
+route.post('/sendImage/:clientSessionId', sendImage);
 
-route.post('/bulkMessage:clientSessionId', bulkMessage);
+route.post('/bulkMessage/:clientSessionId', bulkMessage);
 
-route.post('/sendButton:clientSessionId', sendButton);
+route.post('/sendButton/:clientSessionId', sendButton);
 
 export {
     route
