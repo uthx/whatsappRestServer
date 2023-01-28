@@ -112,43 +112,6 @@ export const bulkMessage = async (req, res) => {
 
 export const sendButton = async (req, res) => {
   try {
-    // const input = {
-    //   body: "This is the body of the message, it would be great if you could interact with the below buttons",
-    //   buttons: [
-    //     {
-    //       buttonId: "button_1",
-    //       buttonText: {
-    //         displayText: "Button 1",
-    //       },
-    //       type: 1,
-    //     },
-    //     {
-    //       buttonId: "button_2",
-    //       buttonText: {
-    //         displayText: "Button 2",
-    //       },
-    //       type: 2,
-    //     },
-    //   ],
-    //   title: "test button title",
-    //   footer: "test footer",
-    // };
-    // const updatedInput = new WhatsappClient.Buttons(
-    //   input.body,
-    //   input.buttons,
-    // );
-    // let newinput = [
-    //   { buttonId: "customId", buttonText: { displayText: "button1" }, type: 1 },
-    //   { buttonId: "n3XKsL", buttonText: { displayText: "button2" }, type: 1 },
-    //   { buttonId: "NDJk0a", buttonText: { displayText: "button3" }, type: 1 },
-    // ];
-    // const { phoneNumber } = req.body;
-    // const resp = await client.sendMessage(`${phoneNumber}@c.us`, updatedInput);
-    // console.log(resp);
-    // res.send({
-    //   status: "success",
-    //   message: "button sent successfully",
-    // });
     const client = getClientInstance(req.params.clientSessionId);
     const response = await buttonFlow(`${req.body.phoneNumber}@c.us`, client);
     console.log({response});

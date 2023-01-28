@@ -13,21 +13,21 @@ export const sessionManager = (sessionId) => {
       clientId: sessionId,
     }),
   });
-  client.on("authenticated", () => {
-    console.log(`Client: ${sessionId} is Authenticated`);
-  });
+  // client.on("authenticated", () => {
+  //   console.log(`Client: ${sessionId} is Authenticated`);
+  // });
 
-  client.on("qr", (code) => {
-    console.log(` Generating QE for ${sessionId}`);
-    qrCode.generate(code, { small: true });
-  });
+  // client.on("qr", (code) => {
+  //   console.log(` Generating QE for ${sessionId}`);
+  //   qrCode.generate(code, { small: true });
+  // });
 
-  client.on("ready", () => {
-    console.log(`Client : ${sessionId} is ready.`);
-  });
-  client.on("message", (message) => {
-    console.log(`Client: ${sessionId} received a mesage`, message.body);
-  });
+  // client.on("ready", () => {
+  //   console.log(`Client : ${sessionId} is ready.`);
+  // });
+  // client.on("message", (message) => {
+  //   console.log(`Client: ${sessionId} received a mesage`, message.body);
+  // });
   client.initialize();
 
   return client;
