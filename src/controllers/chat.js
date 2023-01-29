@@ -8,10 +8,10 @@ export const sendMessage = async (req, res) => {
   try {
       const client = getClientInstance(req.params.clientSessionId);
       const { phoneNumber, countryCode, message } = req.body;
-    console.log({ reqBody: req.body });
+    // console.log({ reqBody: req.body });
 
     if (!phoneNumber || !countryCode || !message) {
-      res.send({
+      return res.send({
         status: "error",
         message: `Invalid input to sendMessage, INPUT: ${req.body}`,
       });
@@ -20,14 +20,14 @@ export const sendMessage = async (req, res) => {
       id: { fromMe },
     } = await client.sendMessage(`${countryCode}${phoneNumber}@c.us`, message);
     if (fromMe) {
-      res.send({
+      return res.send({
         status: "success",
         message: `Message successfully sent to ${phoneNumber}`,
       });
     }
   } catch (error) {
     console.log(`Error: sendMessag, ${error}`);
-    res.send({ status: "error", message: `Error` });
+    return res.send({ status: "error", message: `Error` });
   }
 };
 
@@ -36,7 +36,7 @@ export const sendImage = async (req, res) => {
     const client = getClientInstance(req.params.clientSessionId);
     const { phoneNumber, image, caption, countryCode } = req.body;
     if (!phoneNumber || !countryCode || !image || !isImageValid(image)) {
-      res.send({
+      return res.send({
         status: "error",
         message: "please enter valid phone and base64/url of image",
       });
@@ -48,14 +48,14 @@ export const sendImage = async (req, res) => {
       caption: caption || "",
     });
     if (fromMe) {
-      res.send({
+      return res.send({
         status: "Success",
         message: `Image has been successfully sent to ${phoneNumber}`,
       });
     }
   } catch (error) {
     console.log("Error in sendImage", error);
-    res.send({
+    return res.send({
       status: "Failure",
       message: `sendImage error: ${error}`,
     });
@@ -85,25 +85,25 @@ export const bulkMessage = async (req, res) => {
       !message
     ) {
       console.log("Error bulkMessage, invalid input");
-      res.send({
+      return res.send({
         status: "Failure",
         message: "Error bulkMessage, invalid input",
       });
     }
     await Promise.all(
       parsedContactInfo.map(async (info) => {
-        console.log({ info });
+        // console.log({ info });
         const { phoneNumber, countryCode } = info;
         await client.sendMessage(`${countryCode}${phoneNumber}@c.us`, message);
       })
     );
-    res.send({
+    return res.send({
       status: "Success",
       message: `Bulk message has been sent`,
     });
   } catch (error) {
     console.log("Error: BulkMessage", error);
-    res.send({
+    return res.send({
       status: "Failure",
       message: `bulkMessage error: ${error}`,
     });
@@ -114,14 +114,14 @@ export const sendButton = async (req, res) => {
   try {
     const client = getClientInstance(req.params.clientSessionId);
     const response = await buttonFlow(`${req.body.phoneNumber}@c.us`, client);
-    console.log({response});
-     res.send({
+    // console.log({response});
+     return res.send({
       status: "success",
       message: "button sent successfully",
     });
   } catch (error) {
     console.log("button error", error);
-    res.send({
+    return res.send({
       status: "failure",
       message: "error send button",
     });
@@ -152,7 +152,7 @@ const buttonFlow = async (number, client) => {
   let button2 = new WwebjsSender.MessageButton()
     .setCustomId("cancel")
     .setLabel("❌");
-  console.log({embed})
+  // console.log({embed})
   return await WwebjsSender.send({
     client,
     number,

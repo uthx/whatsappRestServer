@@ -81,7 +81,7 @@ app.post('/initSession/:phone', (req, res) => {
                 message = "QR Code Attached"
                 console.log("QR Code Attached")
                 // qrCode.generate(code , {small: true})
-                res.send({
+                return res.send({
                     message,
                     generatedQrCode
                 })
@@ -96,7 +96,7 @@ app.post('/initSession/:phone', (req, res) => {
                 sent = true
                 message = "Authentication complete"
                 console.log("Authentication complete")
-                res.send({
+               return res.send({
                     message,
                     generatedQrCode
                 })
