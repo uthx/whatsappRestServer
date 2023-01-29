@@ -64,14 +64,14 @@ app.use(bodyParser.urlencoded({
 }));
 
 export const clientSessionStore = {};
-console.log(clientSessionStore);
+// console.log(clientSessionStore);
 app.post('/initSession/:phone', (req, res) => {
     try {
         const phoneNumber = req.params.phone;
         let sent;
         let generatedQrCode;
         let message;
-        console.log(`initSession input`, phoneNumber);
+        // console.log(`initSession input`, phoneNumber);
         const clientInstance = sessionManager(phoneNumber);
         clientInstance.on('qr', code => {
             console.log("Flow in qr code")
@@ -80,7 +80,7 @@ app.post('/initSession/:phone', (req, res) => {
                 generatedQrCode = code
                 message = "QR Code Attached"
                 console.log("QR Code Attached")
-                qrCode.generate(code , {small: true})
+                // qrCode.generate(code , {small: true})
                 res.send({
                     message,
                     generatedQrCode
@@ -105,7 +105,7 @@ app.post('/initSession/:phone', (req, res) => {
             }
         })
         clientSessionStore[phoneNumber] = clientInstance
-        console.log({clientSessionStore});
+        // console.log({clientSessionStore});
     } catch (error) {
         console.log("initSession error", error);
         res.send("negative");
