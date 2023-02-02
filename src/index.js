@@ -1,8 +1,10 @@
+import events from 'events';
 import express from "express";
 import bodyParser from 'body-parser';
 import { route } from "../src/routes.js";
 import { sessionManager } from "./sessionManager.js";
 import { clientSessionHelper } from "./utils/helpers.js";
+events.EventEmitter.defaultMaxListeners = 100;
 const app = express();
 const port = 3000;
 
